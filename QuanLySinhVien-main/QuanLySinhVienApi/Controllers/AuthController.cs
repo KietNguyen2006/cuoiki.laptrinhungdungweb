@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using QuanLySinhVienApi.Models;
-using QuanLySinhVienApi.Repositories;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace QuanLySinhVienApi.Controllers
 {
@@ -12,47 +12,52 @@ namespace QuanLySinhVienApi.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly AccountRepository _accountRepo;
-        private readonly IConfiguration _config;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(AccountRepository accountRepo, IConfiguration config)
+        public AuthController(IConfiguration configuration)
         {
-            _accountRepo = accountRepo;
-            _config = config;
+            _configuration = configuration;
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public IActionResult Login([FromBody] LoginModel model)
         {
-            var account = _accountRepo.GetAll().FirstOrDefault(a => a.Username == request.Username);
-            if (account == null || account.PasswordHash != request.Password) // Nên hash password thực tế
-                return Unauthorized("Sai tài khoản hoặc mật khẩu");
+            // Thay đoạn này bằng kiểm tra tài khoản thực tế trong DB
+            if (model.Username == "admin" && model.Password == "123456")
+            {
+                var token = GenerateJwtToken(model.Username);
+                return Ok(new { token });
+            }
+            return Unauthorized("Sai tài khoản hoặc mật khẩu");
+        }
+
+        private string GenerateJwtToken(string username)
+        {
+            var jwtSettings = _configuration.GetSection("Jwt");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, account.Username ?? ""),
-                new Claim(ClaimTypes.Role, account.Role ?? "")
+                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
             var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
+                expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: creds
             );
 
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
+    }
 
-        [HttpPost("logout")]
-        public IActionResult Logout()
-        {
-            // Với JWT, logout chỉ cần xóa token phía client
-            return Ok(new { message = "Đăng xuất thành công" });
-        }
+    public class LoginModel
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }

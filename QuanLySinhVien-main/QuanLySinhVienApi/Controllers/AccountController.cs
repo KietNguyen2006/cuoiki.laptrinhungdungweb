@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using QuanLySinhVienApi.Models;
 using QuanLySinhVienApi.Repositories;
-
+using Microsoft.AspNetCore.Authorization;
 namespace QuanLySinhVienApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private readonly AccountRepository _repo;

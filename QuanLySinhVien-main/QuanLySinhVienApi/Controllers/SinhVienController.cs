@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuanLySinhVienApi.Models;
 using QuanLySinhVienApi.Repositories;
@@ -6,6 +7,7 @@ namespace QuanLySinhVienApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class SinhVienController : ControllerBase
     {
         private readonly SinhVienRepository _repo;

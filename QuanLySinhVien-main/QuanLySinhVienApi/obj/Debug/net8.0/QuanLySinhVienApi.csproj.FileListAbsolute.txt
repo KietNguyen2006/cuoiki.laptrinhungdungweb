@@ -169,3 +169,5 @@ D:\QuanLySinhVien-main\QuanLySinhVien-main\QuanLySinhVienApi\obj\Debug\net8.0\re
 D:\QuanLySinhVien-main\QuanLySinhVien-main\QuanLySinhVienApi\obj\Debug\net8.0\QuanLySinhVienApi.pdb
 D:\QuanLySinhVien-main\QuanLySinhVien-main\QuanLySinhVienApi\obj\Debug\net8.0\QuanLySinhVienApi.genruntimeconfig.cache
 D:\QuanLySinhVien-main\QuanLySinhVien-main\QuanLySinhVienApi\obj\Debug\net8.0\ref\QuanLySinhVienApi.dll
+D:\QuanLySinhVien-main\QuanLySinhVien-main\QuanLySinhVienApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\QuanLySinhVien-main\QuanLySinhVien-main\QuanLySinhVienApi\obj\Debug\net8.0\QuanLySinhVienApi.sourcelink.json

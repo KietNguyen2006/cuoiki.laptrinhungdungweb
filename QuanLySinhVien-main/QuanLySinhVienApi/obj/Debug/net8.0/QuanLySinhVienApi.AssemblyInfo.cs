@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuanLySinhVienApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c59e6ed3fe086aaf9f5cc7ab2a43d2c69467cfa1")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuanLySinhVienApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuanLySinhVienApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
